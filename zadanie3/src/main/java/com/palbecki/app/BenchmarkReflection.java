@@ -9,7 +9,9 @@ import java.util.List;
 
 public class BenchmarkReflection {
 	
-	static final int M = 10000;
+	static final int M = 1000;
+	static final int N = 10000;
+	
 	static long start;
 	static long time;
 	static int formed;
@@ -22,65 +24,78 @@ public class BenchmarkReflection {
 	static List<Long> method = new ArrayList<>();
 
 
-	public static String run() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException{
-		Band band = new Band("test", 1234);
+	public static String run() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, ClassNotFoundException, InstantiationException{
+		//Band band = new Band("test", 1234);
+		Class<?> classs = Class.forName("com.palbecki.app.Band");
+		Object band = classs.getDeclaredConstructor(String.class, int.class).newInstance("test",1234);
+		System.out.println("aa");
 		for(int i=0;i<M;i++){
 			start = System.nanoTime();
+			for(int j=0;j<N;j++){
 			Field f = band.getClass().getField("formed");
 			formed = (int) f.get(band);
+			}
 			simpleRead.add(System.nanoTime() - start);
 		}
 
 		for(int i=0;i<M;i++){
 			start = System.nanoTime();
+			for(int j=0;j<N;j++){
 			Field f = band.getClass().getField("name");
 			name = (String) f.get(band);
+			}
 			refRead.add(System.nanoTime() - start);
 		}
 
 		for(int i=0;i<M;i++){
 			start = System.nanoTime();
+			for(int j=0;j<N;j++){
 			Field f = band.getClass().getField("formed");
 			f.set(band,4321);
+			}
 			simpleWrite.add(System.nanoTime() - start);
 		}
 		for(int i=0;i<M;i++){
 			start = System.nanoTime();
+			for(int j=0;j<N;j++){
 			Field f = band.getClass().getField("name");
 			f.set(band,"test");
+			}
 			refWrite.add(System.nanoTime() - start);
 		}
 		for(int i=0;i<M;i++){
 			start = System.nanoTime();
+			for(int j=0;j<N;j++){
 			Method m =  band.getClass().getMethod("Hello", String.class);
 			m.invoke(band, "test");
+			}
 			method.add(System.nanoTime() - start);
 		}
-		
+
 		Collections.sort(simpleRead);
 		for(int i=0;i<100;i++){
-			simpleRead.remove(simpleRead.get(i));
-			simpleRead.remove(simpleRead.get(simpleRead.size()-i-1));
+			simpleRead.remove(i);
+			simpleRead.remove(simpleRead.size()-i-1);
 		}
 		Collections.sort(refRead);
 		for(int i=0;i<100;i++){
-			refRead.remove(refRead.get(i));
-			refRead.remove(refRead.get(refRead.size()-i-1));
+			refRead.remove(i);
+			refRead.remove(simpleRead.size()-i-1);
 		}
 		Collections.sort(simpleWrite);
 		for(int i=0;i<100;i++){
-			simpleWrite.remove(simpleWrite.get(i));
-			simpleWrite.remove(simpleWrite.get(simpleWrite.size()-i-1));
+			simpleWrite.remove(i);
+			simpleWrite.remove(simpleRead.size()-i-1);
 		}
 		Collections.sort(refWrite);
 		for(int i=0;i<100;i++){
-			refWrite.remove(refWrite.get(i));
-			refWrite.remove(refWrite.get(refWrite.size()-i-1));
+			refWrite.remove(i);
+			refWrite.remove(simpleRead.size()-i-1);
 		}
 		Collections.sort(method);
 		for(int i=0;i<100;i++){
-			method.remove(method.get(i));
-			method.remove(method.get(method.size()-i-1));
+			method.remove(i);
+			method.remove(simpleRead.size()-i-1);
 		}
 
 		StringBuilder sb = new StringBuilder();
