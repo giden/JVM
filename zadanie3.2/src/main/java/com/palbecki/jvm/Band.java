@@ -10,7 +10,9 @@ public class Band {
 	
 	public String name;
 	private int formed;
-	public List<String> lista = Arrays.asList("a","v","c");
+	private List<String> lista = Arrays.asList("a","v","c");
+	private String[] tab = {"a","v","c"};
+
 	
 	public Band(String name, int formed){
 		this.formed = formed;
