@@ -19,6 +19,8 @@ public class App
 			ObjectMapper mapper = new ObjectMapper();
 			System.out.println(mapper.writeValueAsString(new Band("test",1234)));
 			
+			
+			for(int i=0;i<10;i++)Benchmark.run();
 			System.out.println(Benchmark.run());
 			
 		} catch (IOException | IllegalArgumentException | IllegalAccessException e) {
