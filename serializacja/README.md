@@ -31,3 +31,9 @@ Wynik
 ## Lista 10 tys. obiektów: 
 
 ![one](resources/a.png)
+
+Sprzęt:
+openjdk version "1.8.0_91"
+OpenJDK 64-Bit Server VM (build 25.91-b14, mixed mode)
+Linux debian 4.5.0-2-amd64 #1 SMP Debian 4.5.4-1 (2016-05-16) x86_64 GNU/Linux
+Intel(R) Core(TM) i5-3230M CPU @ 2.60GHz
